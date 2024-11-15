@@ -9,6 +9,15 @@ const EmployeeComponent = () => {
 
     const navigator =useNavigate();
 
+    const [errors,setErrors] = useState(
+        {
+            firstName: '',
+            lastName: '',
+            email: ''
+
+        }
+    )
+
     function handleFirstName(e) {
         setFirstName(e.target.value);
     }
@@ -24,13 +33,46 @@ const EmployeeComponent = () => {
     function saveEmployee(e) {
         e.preventDefault();
 
-        const employee = { firstName, lastName, email };
-        console.log(employee);
+        if(validateForm()){
 
-        createEmployee( employee).then((response)=>{
-            console.log(response.data);
-            navigator('/employees')
-        });
+            const employee = { firstName, lastName, email };
+            console.log(employee);
+    
+            createEmployee( employee).then((response)=>{
+                console.log(response.data);
+                navigator('/employees')
+            });
+
+        }
+    }
+
+    function validateForm(){
+        let valid =true;
+        const errorsCoppy = {... errors}
+
+        if(firstName.trim()){
+            errorsCoppy.firstName = ''
+        } else{
+            errorsCoppy.firstName = 'First name is required';
+            valid = false;
+        }
+
+        if(lastName.trim()){
+            errorsCoppy.lastName = ''
+        } else{
+            errorsCoppy.lastName = 'Last name is required';
+            valid = false;
+        }
+
+        if(email.trim()){
+            errorsCoppy.email = ''
+        } else{
+            errorsCoppy.email = 'Email is required';
+            valid = false;
+        }
+
+        setErrors(errorsCoppy);
+        return valid;
     }
 
     return (
@@ -48,9 +90,10 @@ const EmployeeComponent = () => {
                                     placeholder="First Name"
                                     name="firstName"
                                     value={firstName}
-                                    className="form-control"
+                                    className={`form-control ${errors.firstName ? 'is-invalid': ''}`}
                                     onChange={handleFirstName}
                                 />
+                                {errors.firstName && <div className='invalid-feedback'>{errors.firstName}</div>}
                             </div>
 
                             <div className="form-group mb-2">
@@ -60,9 +103,10 @@ const EmployeeComponent = () => {
                                     placeholder="Last Name"
                                     name="lastName"
                                     value={lastName}
-                                    className="form-control"
+                                    className={`form-control ${errors.lastName ? 'is-invalid': ''}`}
                                     onChange={handleLastName}
                                 />
+                                 {errors.lastName && <div className='invalid-feedback'>{errors.lastName}</div>}
                             </div>
 
                             <div className="form-group mb-2">
@@ -72,9 +116,10 @@ const EmployeeComponent = () => {
                                     placeholder="Email"
                                     name="email"
                                     value={email}
-                                    className="form-control"
+                                    className={`form-control ${errors.email ? 'is-invalid': ''}`}
                                     onChange={handleEmail}
                                 />
+                                 {errors.email && <div className='invalid-feedback'>{errors.email}</div>}
                             </div>
 
                             <button className="btn btn-success" onClick={saveEmployee}>Submit</button>
