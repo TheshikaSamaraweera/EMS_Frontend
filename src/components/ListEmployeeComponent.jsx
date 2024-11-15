@@ -1,11 +1,14 @@
 import React ,{useEffect, useState} from 'react'
 import { listEmployees } from '../service/EmployeeService'
+import { Button } from 'bootstrap'
+import { useNavigate } from 'react-router-dom'
 
 
 //using (rafce) react arror functional comnponent export
 const ListEmployeeComponent = () => {
 
     const [employees ,setEmployees] = useState([])
+    const navigator = useNavigate();
 
     useEffect(()=>{
         listEmployees().then((response) => {
@@ -15,6 +18,11 @@ const ListEmployeeComponent = () => {
         })
     },[])
 
+    function AddNewEmployee(){
+        navigator('/add-employee')
+         
+    }
+
 
 
 
@@ -22,6 +30,8 @@ const ListEmployeeComponent = () => {
     <div className='container'>
 
         <h2 className='text-center'>List of Employee</h2>
+
+        <button type="button" class="btn btn-primary mb-3" onClick={AddNewEmployee} >Add Employee</button>
 
         {/* create a table for dispaly data */}
 

@@ -5,10 +5,11 @@ import './index.css'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Test from './Test.jsx'
-import ListEmployeeComponent from './components/ListEmployeeComponent.jsx'
+import App from './App.jsx'
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ListEmployeeComponent/>
+    <App/>
   </StrictMode>,
 )
